@@ -49,8 +49,7 @@ document.getElementById('check').addEventListener('click', () => {
   filterData.forEach(task => {
     const li = document.createElement('li')
     li.textContent = `task: ${task.task} | end: ${task.end} | state: completed `
-    const input = document.createElement('input')
-    ul.appendChild(input)
+    ul.appendChild(li)
   });
   tasksList.appendChild(ul)
 })
