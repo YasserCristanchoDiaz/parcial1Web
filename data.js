@@ -49,7 +49,8 @@ document.getElementById('check').addEventListener('click', () => {
   filterData.forEach(task => {
     const li = document.createElement('li')
     li.textContent = `task: ${task.task} | end: ${task.end} | state: completed `
-    ul.appendChild(li)
+    const input = document.createElement('input')
+    ul.appendChild(input)
   });
   tasksList.appendChild(ul)
 })
@@ -81,19 +82,62 @@ document.getElementById('check-novig').addEventListener('click', () => {
 document.getElementById('all').addEventListener('click', () => {
   tasksList.innerHTML = ''
   const ul = document.createElement('ul')
-  const filterData = tasksarr.filter(t => t.state)
-  filterData.forEach(task => {
+  tasksarr.forEach(task => {
     const li = document.createElement('li')
-    li.textContent = `task: ${task.task} | end: ${task.end} | state: completed `
+    li.textContent = `task: ${task.task} | end: ${task.end} | state: ${task.state ? 'completed' : 'no completed'}`
     ul.appendChild(li)
-  });
-
-  const filterDatanc = tasksarr.filter(t => !t.state)
-  filterDatanc.forEach(task => {
-    const li = document.createElement('li')
-    li.textContent = `task: ${task.task} | end: ${task.end} | state: no completed `
-    ul.appendChild(li)
-  });
+  })
   tasksList.appendChild(ul)
 })
 
+const addTask = document.getElementById('add-task')
+addTask.innerHTML = ''
+document.getElementById('add').addEventListener('click', () => {
+  const taskInput = document.createElement('input');
+  taskInput.type = 'text';
+  taskInput.placeholder = 'Ingrese la nueva tarea';
+  addTask.appendChild(taskInput);
+
+  const dateInput = document.createElement('input');
+  dateInput.type = 'text';
+  dateInput.placeholder = 'Ingrese la fecha (YYYY/MM/DD)';
+  addTask.appendChild(dateInput);
+
+  const addButton = document.createElement('button');
+  addButton.textContent = 'Agregar';
+  addTask.appendChild(addButton);
+  addButton.addEventListener('click', () => {
+    const newTask = taskInput.value;
+    const newDate = dateInput.value;
+    const newTaskKey = `${Object.keys(data.tasks).length + 1}`
+    console.log(newTaskKey)
+    if (newTask && newDate) {
+      
+      data.tasks[newTaskKey] = {
+        task: newTask,
+        state: false,
+        end: newDate
+      };
+
+      taskInput.value = ''
+      dateInput.value = ''
+      //update()
+    } else {
+      alert('Asegurese de ingresar la tarea y la fecha.')
+    }
+  });
+
+  
+})
+
+
+function update() {
+  const ul = document.createElement('ul')
+  tasks.forEach(task => {
+    const li = document.createElement('li')
+    li.textContent = `task: ${task.task} | end: ${task.end} | state: ${task.state ? 'completed' : 'no completed'}`
+    ul.appendChild(li)
+  });
+  tasksList.innerHTML = ''
+  tasksList.appendChild(ul)
+}
